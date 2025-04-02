@@ -250,7 +250,7 @@
                                 <img id="cleaned-image" class="w-full h-64 object-contain mb-4" src="" alt="Image nettoyée">
                                 <div class="flex justify-between">
                                     <span id="cleaned-size" class="text-sm text-gray-500"></span>
-                                    <a id="download-btn" download="image_sans_metadata.jpg" class="btn-secondary text-white px-4 py-2 rounded-lg text-sm">Télécharger</a>
+                                    <a id="download-btn" class="btn-secondary text-white px-4 py-2 rounded-lg text-sm pointer-events-none opacity-50" download="image_sans_metadata.jpg">Télécharger</a>
                                 </div>
                             </div>
                         </div>
@@ -430,38 +430,30 @@
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 MetaClean. Tous droits réservés.</p>
+                <p>© 2025 MetaClean. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
     <!-- JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/piexifjs/1.0.6/piexif.min.js"></script>
     
     <!-- Traductions -->
     <script>
     // Dictionnaire de traductions
     const translations = {
         fr: {
-            // Navigation
             "nav_home": "Accueil",
             "nav_how": "Comment ça marche",
             "nav_about": "À propos",
-            
-            // Sections principales
             "hero_title": "Supprimez les métadonnées de vos photos en toute sécurité",
             "hero_subtitle": "Protégez votre vie privée en supprimant les informations cachées dans vos images. Tout se passe dans votre navigateur, aucune donnée n'est stockée.",
             "hero_button": "Commencer maintenant",
-            
-            // Section upload
             "upload_title": "Nettoyez vos images",
             "drop_title": "Glissez et déposez votre image ici",
             "drop_or": "ou",
             "browse_files": "Parcourir les fichiers",
             "processing": "Traitement en cours...",
-            
-            // Résultats
             "original_image": "Image originale",
             "cleaned_image": "Image sans métadonnées",
             "view_metadata": "Voir les métadonnées",
@@ -470,8 +462,6 @@
             "removed_metadata": "Métadonnées supprimées",
             "no_metadata": "Aucune métadonnée EXIF détectée.",
             "process_another": "Traiter une autre image",
-            
-            // Comment ça marche
             "how_title": "Comment ça marche",
             "how_step1_title": "1. Importez votre image",
             "how_step1_text": "Glissez-déposez ou sélectionnez une image à partir de votre appareil.",
@@ -479,8 +469,6 @@
             "how_step2_text": "Notre application analyse toutes les données EXIF, IPTC et autres métadonnées.",
             "how_step3_title": "3. Téléchargez l'image nettoyée",
             "how_step3_text": "Obtenez votre image sans aucune métadonnée pour protéger votre vie privée.",
-            
-            // Confidentialité
             "privacy_title": "Confidentialité garantie",
             "privacy_local_title": "Traitement local uniquement",
             "privacy_local_text": "Toutes les opérations sont effectuées localement dans votre navigateur. Vos images ne sont jamais envoyées à un serveur.",
@@ -490,8 +478,6 @@
             "privacy_opensource_text": "Notre code est ouvert et peut être vérifié par n'importe qui pour confirmer notre engagement envers la confidentialité.",
             "privacy_offline_title": "Utilisation hors ligne possible",
             "privacy_offline_text": "Une fois chargé, notre outil fonctionne même sans connexion internet pour une sécurité maximale.",
-            
-            // Fonctionnalités futures
             "future_title": "Fonctionnalités à venir",
             "future_edit_title": "Modification des métadonnées",
             "future_edit_text": "Ajoutez, modifiez ou supprimez des métadonnées spécifiques tout en gardant celles que vous souhaitez.",
@@ -500,14 +486,10 @@
             "future_profiles_title": "Profils personnalisés",
             "future_profiles_text": "Créez et sauvegardez des profils de nettoyage pour différents usages et plateformes.",
             "coming_soon": "Bientôt disponible",
-            
-            // À propos
             "about_title": "À propos de MetaClean",
             "about_p1": "MetaClean a été créé pour aider les utilisateurs à protéger leur vie privée en ligne. Les métadonnées des photos peuvent révéler de nombreuses informations sensibles comme votre localisation, le modèle de votre appareil, la date et l'heure exactes, et même parfois des informations personnelles.",
             "about_p2": "Notre mission est de rendre accessible à tous un outil simple, gratuit et sécurisé pour nettoyer ces données avant de partager vos images en ligne.",
             "about_p3": "Nous croyons fermement que la confidentialité en ligne est un droit fondamental, et nous nous engageons à fournir des outils qui respectent ce principe.",
-            
-            // Footer
             "quick_links": "Liens rapides",
             "legal": "Juridique",
             "terms": "Conditions d'utilisation",
@@ -515,24 +497,17 @@
             "copyright": "© 2025 MetaClean. Tous droits réservés."
         },
         en: {
-            // Navigation
             "nav_home": "Home",
             "nav_how": "How It Works",
             "nav_about": "About",
-            
-            // Sections principales
             "hero_title": "Safely Remove Metadata from Your Photos",
             "hero_subtitle": "Protect your privacy by removing hidden information from your images. Everything happens in your browser, no data is stored.",
             "hero_button": "Get Started",
-            
-            // Section upload
             "upload_title": "Clean Your Images",
             "drop_title": "Drag and drop your image here",
             "drop_or": "or",
             "browse_files": "Browse files",
             "processing": "Processing...",
-            
-            // Résultats
             "original_image": "Original Image",
             "cleaned_image": "Metadata-free Image",
             "view_metadata": "View metadata",
@@ -541,8 +516,6 @@
             "removed_metadata": "Removed Metadata",
             "no_metadata": "No EXIF metadata detected.",
             "process_another": "Process Another Image",
-            
-            // Comment ça marche
             "how_title": "How It Works",
             "how_step1_title": "1. Import Your Image",
             "how_step1_text": "Drag and drop or select an image from your device.",
@@ -550,8 +523,6 @@
             "how_step2_text": "Our application analyzes all EXIF, IPTC and other metadata.",
             "how_step3_title": "3. Download Clean Image",
             "how_step3_text": "Get your image without any metadata to protect your privacy.",
-            
-            // Confidentialité
             "privacy_title": "Privacy Guaranteed",
             "privacy_local_title": "Local Processing Only",
             "privacy_local_text": "All operations are performed locally in your browser. Your images are never sent to a server.",
@@ -561,8 +532,6 @@
             "privacy_opensource_text": "Our code is open and can be verified by anyone to confirm our commitment to privacy.",
             "privacy_offline_title": "Offline Usage Possible",
             "privacy_offline_text": "Once loaded, our tool works even without an internet connection for maximum security.",
-            
-            // Fonctionnalités futures
             "future_title": "Coming Soon",
             "future_edit_title": "Metadata Editing",
             "future_edit_text": "Add, modify or remove specific metadata while keeping what you want.",
@@ -571,14 +540,10 @@
             "future_profiles_title": "Custom Profiles",
             "future_profiles_text": "Create and save cleaning profiles for different uses and platforms.",
             "coming_soon": "Coming Soon",
-            
-            // À propos
             "about_title": "About MetaClean",
             "about_p1": "MetaClean was created to help users protect their online privacy. Photo metadata can reveal a lot of sensitive information such as your location, device model, exact date and time, and sometimes even personal information.",
             "about_p2": "Our mission is to make a simple, free and secure tool accessible to everyone to clean this data before sharing your images online.",
             "about_p3": "We firmly believe that online privacy is a fundamental right, and we are committed to providing tools that respect this principle.",
-            
-            // Footer
             "quick_links": "Quick Links",
             "legal": "Legal",
             "terms": "Terms of Use",
@@ -586,68 +551,48 @@
             "copyright": "© 2025 MetaClean. All rights reserved."
         },
         es: {
-            // Navigation
             "nav_home": "Inicio",
             "nav_how": "Cómo funciona",
             "nav_about": "Acerca de",
-            
-            // Sections principales
             "hero_title": "Elimina los metadatos de tus fotos de forma segura",
             "hero_subtitle": "Protege tu privacidad eliminando la información oculta de tus imágenes. Todo ocurre en tu navegador, no se almacena ningún dato.",
-            "hero_button": "Comenzar ahora",
-            
-            // Más traducciones en español...
-            // Continúa con el resto de las traducciones para español
-        },
-        // Añadir otros idiomas según sea necesario (de, zh, etc.)
+            "hero_button": "Comenzar ahora"
+            // ... (add more Spanish translations if needed) ...
+        }
+        // ... (add other languages like de, zh if desired) ...
     };
     
-    // Función para cambiar el idioma
     function changeLanguage(lang) {
-        // Guardar preferencia de idioma
         localStorage.setItem('preferredLanguage', lang);
-        
-        // Actualizar el idioma mostrado en el selector
         document.getElementById('current-language').textContent = 
             document.querySelector(`.language-option[data-lang="${lang}"]`).textContent;
-        
-        // Actualizar la clase activa en las opciones
         document.querySelectorAll('.language-option').forEach(option => {
             option.classList.toggle('active', option.getAttribute('data-lang') === lang);
         });
-        
-        // Actualizar todos los textos en la página
         document.querySelectorAll('[data-lang-key]').forEach(element => {
             const key = element.getAttribute('data-lang-key');
             if (translations[lang] && translations[lang][key]) {
                 element.textContent = translations[lang][key];
             }
         });
-        
-        // Cerrar el menú desplegable
         document.getElementById('language-dropdown').classList.remove('show');
     }
     
-    // Inicializar funcionalidad del selector de idioma cuando el DOM esté cargado
     document.addEventListener('DOMContentLoaded', function() {
-        // Configurar el selector de idioma
         const languageToggle = document.getElementById('language-toggle');
         const languageDropdown = document.getElementById('language-dropdown');
         const languageOptions = document.querySelectorAll('.language-option');
         
-        // Mostrar/ocultar el menú desplegable
         languageToggle.addEventListener('click', function() {
             languageDropdown.classList.toggle('show');
         });
         
-        // Cerrar el menú desplegable al hacer clic fuera de él
         document.addEventListener('click', function(event) {
             if (!event.target.closest('.language-selector') && languageDropdown.classList.contains('show')) {
                 languageDropdown.classList.remove('show');
             }
         });
         
-        // Cambiar idioma al seleccionar una opción
         languageOptions.forEach(option => {
             option.addEventListener('click', function() {
                 const lang = this.getAttribute('data-lang');
@@ -655,9 +600,7 @@
             });
         });
         
-        // Essayer de récupérer la langue préférée de l'utilisateur (si elle existe)
-        let preferredLanguage = 'fr'; // Français par défaut
-        
+        let preferredLanguage = 'fr';
         try {
             const storedLang = localStorage.getItem('preferredLanguage');
             if (storedLang) {
@@ -667,306 +610,231 @@
             }
         } catch (e) {
             console.log('localStorage non disponible, utilisation de la langue par défaut');
-            // On continue avec la langue par défaut
-            try {
-                if (navigator.language) {
-                    preferredLanguage = navigator.language.slice(0, 2);
-                }
-            } catch (e) {
-                // Si même navigator.language n'est pas disponible, on garde le français
+            if (navigator.language) {
+                preferredLanguage = navigator.language.slice(0, 2);
             }
         }
         
-        // Vérifier si la langue préférée est disponible, sinon utiliser le français
         const availableLanguages = Array.from(languageOptions).map(opt => opt.getAttribute('data-lang'));
         const langToUse = availableLanguages.includes(preferredLanguage) ? preferredLanguage : 'fr';
-        
-        // Aplicar el idioma inicial
         changeLanguage(langToUse);
         
-        // También añadir atributos data-lang-key a todos los elementos de texto que deben ser traducidos
-        // Esto se puede hacer automáticamente al cargar la página
         addLanguageKeys();
     });
     
-    // Función para añadir atributos data-lang-key a elementos relevantes
     function addLanguageKeys() {
-        // Ejemplo: añadir claves a elementos específicos si no están ya marcados
         const heroTitle = document.querySelector('.py-16.bg-gradient-to-r h1');
         if (heroTitle && !heroTitle.hasAttribute('data-lang-key')) {
             heroTitle.setAttribute('data-lang-key', 'hero_title');
         }
-        
-        // Continuar con otros elementos principales
-        // Nota: esta función se puede ampliar para detectar y marcar automáticamente más elementos
     }
     </script>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // DOM Elements
-            const dropZone = document.getElementById('drop-zone');
-            const fileInput = document.getElementById('file-input');
-            const processingArea = document.getElementById('processing-area');
-            const resultsArea = document.getElementById('results-area');
-            const progressBar = document.getElementById('progress-bar');
-            const statusText = document.getElementById('status-text');
-            const originalImage = document.getElementById('original-image');
-            const cleanedImage = document.getElementById('cleaned-image');
-            const originalSize = document.getElementById('original-size');
-            const cleanedSize = document.getElementById('cleaned-size');
-            const downloadBtn = document.getElementById('download-btn');
-            const viewMetadataBtn = document.getElementById('view-metadata-btn');
-            const metadataDetails = document.getElementById('metadata-details');
-            const metadataContent = document.getElementById('metadata-content');
-            const processAnotherBtn = document.getElementById('process-another-btn');
-            
-            // Drag and Drop functionality
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const processingArea = document.getElementById('processing-area');
+        const resultsArea = document.getElementById('results-area');
+        const progressBar = document.getElementById('progress-bar');
+        const statusText = document.getElementById('status-text');
+        const originalImage = document.getElementById('original-image');
+        const cleanedImage = document.getElementById('cleaned-image');
+        const originalSize = document.getElementById('original-size');
+        const cleanedSize = document.getElementById('cleaned-size');
+        const downloadBtn = document.getElementById('download-btn');
+        const viewMetadataBtn = document.getElementById('view-metadata-btn');
+        const metadataDetails = document.getElementById('metadata-details');
+        const metadataContent = document.getElementById('metadata-content');
+        const processAnotherBtn = document.getElementById('process-another-btn');
+
+        downloadBtn.addEventListener('click', function(e) {
+            if (!downloadBtn.href || downloadBtn.href === '#') {
                 e.preventDefault();
-                e.stopPropagation();
+                alert('Veuillez traiter une image avant de télécharger.');
             }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, highlight, false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, unhighlight, false);
-            });
-            
-            function highlight() {
-                dropZone.classList.add('active');
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            dropZone.classList.add('active');
+        }
+
+        function unhighlight() {
+            dropZone.classList.remove('active');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', handleFileSelect, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length) handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length) handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            const file = files[0];
+            if (!file.type.match('image.*')) {
+                alert('Veuillez sélectionner une image.');
+                return;
             }
-            
-            function unhighlight() {
-                dropZone.classList.remove('active');
-            }
-            
-            // Handle file selection
-            dropZone.addEventListener('drop', handleDrop, false);
-            fileInput.addEventListener('change', handleFileSelect, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                if (files.length) {
-                    handleFiles(files);
-                }
-            }
-            
-            function handleFileSelect(e) {
-                const files = e.target.files;
-                if (files.length) {
-                    handleFiles(files);
-                }
-            }
-            
-            // Process files
-            function handleFiles(files) {
-                const file = files[0];
-                if (!file.type.match('image.*')) {
-                    alert('Veuillez sélectionner une image.');
-                    return;
-                }
-                
-                // Show processing UI
-                dropZone.classList.add('hidden');
-                processingArea.classList.remove('hidden');
-                
-                // Read and process the file
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    // Update progress
-                    progressBar.style.width = '30%';
-                    statusText.textContent = 'Lecture de l\'image...';
-                    
-                    // Display original image
-                    originalImage.src = e.target.result;
-                    originalSize.textContent = formatBytes(file.size);
-                    
-                    // Extract metadata
-                    setTimeout(() => {
-                        progressBar.style.width = '60%';
-                        statusText.textContent = 'Extraction des métadonnées...';
-                        
-                        // Store metadata for display
-                        const allMetadata = {};
-                        
-                        // Use EXIF.js to read metadata
-                        EXIF.getData(file, function() {
-                            const exifData = EXIF.getAllTags(this);
-                            allMetadata.exif = exifData;
-                            
-                            // Create clean image (strip metadata)
-                            progressBar.style.width = '90%';
-                            statusText.textContent = 'Suppression des métadonnées...';
-                            
-                            // Create a new image without metadata
-                            createCleanImage(e.target.result, file.type, (cleanImageUrl, cleanSize) => {
-                                // Display clean image
-                                cleanedImage.src = cleanImageUrl;
-                                cleanedSize.textContent = formatBytes(cleanSize);
-                                downloadBtn.href = cleanImageUrl;
-                                
-                                // Format and display metadata
-                                formatMetadataDisplay(allMetadata);
-                                
-                                // Show results
-                                progressBar.style.width = '100%';
-                                setTimeout(() => {
-                                    processingArea.classList.add('hidden');
-                                    resultsArea.classList.remove('hidden');
-                                }, 500);
-                            });
+
+            dropZone.classList.add('hidden');
+            processingArea.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                progressBar.style.width = '30%';
+                statusText.textContent = 'Lecture de l\'image...';
+
+                originalImage.src = e.target.result;
+                originalSize.textContent = formatBytes(file.size);
+
+                setTimeout(() => {
+                    progressBar.style.width = '60%';
+                    statusText.textContent = 'Extraction des métadonnées...';
+
+                    EXIF.getData(file, function() {
+                        const exifData = EXIF.getAllTags(this);
+                        const allMetadata = { exif: exifData };
+
+                        progressBar.style.width = '90%';
+                        statusText.textContent = 'Suppression des métadonnées...';
+
+                        createCleanImage(e.target.result, file.type, (cleanImageUrl, cleanSize) => {
+                            cleanedImage.src = cleanImageUrl;
+                            cleanedSize.textContent = formatBytes(cleanSize);
+                            downloadBtn.href = cleanImageUrl;
+                            downloadBtn.download = `image_sans_metadata_${Date.now()}.jpg`;
+                            downloadBtn.classList.remove('pointer-events-none', 'opacity-50');
+
+                            formatMetadataDisplay(allMetadata);
+
+                            progressBar.style.width = '100%';
+                            setTimeout(() => {
+                                processingArea.classList.add('hidden');
+                                resultsArea.classList.remove('hidden');
+                            }, 500);
                         });
-                    }, 500);
-                };
-                
-                reader.readAsDataURL(file);
-            }
-            
-            // Create clean image
-            function createCleanImage(originalDataUrl, mimeType, callback) {
-                // Pour une suppression plus complète, nous utilisons piexifjs
-                try {
-                    // Si piexifjs est disponible et que c'est un JPEG
-                    if (typeof piexif !== 'undefined' && mimeType === 'image/jpeg') {
-                        // Essayer de supprimer les données EXIF avec piexifjs
-                        const zerothIfd = {};
-                        const exifIfd = {};
-                        const gpsIfd = {};
-                        const firstIfd = {};
-                        const interopIfd = {};
-                        
-                        const exifObj = {"0th":zerothIfd, "Exif":exifIfd, "GPS":gpsIfd, "1st":firstIfd, "Interop":interopIfd};
-                        const exifBytes = piexif.dump(exifObj);
-                        
-                        const base64DataWithoutPrefix = originalDataUrl.replace(/^data:image\/jpeg;base64,/, "");
-                        const cleanJpeg = piexif.insert(exifBytes, base64DataWithoutPrefix);
-                        
-                        const cleanDataUrl = "data:image/jpeg;base64," + cleanJpeg;
-                        const cleanSize = Math.round(cleanDataUrl.length * 0.75);
-                        
-                        callback(cleanDataUrl, cleanSize);
-                        return;
+                    });
+                }, 500);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function createCleanImage(originalDataUrl, mimeType, callback) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                const cleanDataUrl = canvas.toDataURL(mimeType);
+                const cleanSize = Math.round(cleanDataUrl.length * 0.75);
+                callback(cleanDataUrl, cleanSize);
+            };
+            img.onerror = function() {
+                console.error("Erreur lors du chargement de l'image");
+                alert("Une erreur s'est produite lors du traitement de l'image.");
+            };
+            img.src = originalDataUrl;
+        }
+
+        function formatMetadataDisplay(metadata) {
+            metadataContent.innerHTML = '';
+            if (metadata.exif && Object.keys(metadata.exif).length > 0) {
+                const exifSection = document.createElement('div');
+                exifSection.className = 'metadata-section pb-4 mb-4';
+                const sectionTitle = document.createElement('h4');
+                sectionTitle.className = 'font-semibold mb-2';
+                sectionTitle.textContent = 'Données EXIF';
+                exifSection.appendChild(sectionTitle);
+
+                const table = document.createElement('table');
+                table.className = 'w-full text-sm';
+                for (const [key, value] of Object.entries(metadata.exif)) {
+                    if (value && typeof value !== 'function') {
+                        const row = document.createElement('tr');
+                        const keyCell = document.createElement('td');
+                        keyCell.className = 'py-1 pr-4 font-medium text-gray-700';
+                        keyCell.textContent = formatExifKey(key);
+                        row.appendChild(keyCell);
+                        const valueCell = document.createElement('td');
+                        valueCell.className = 'py-1 text-gray-600';
+                        valueCell.textContent = formatExifValue(value);
+                        row.appendChild(valueCell);
+                        table.appendChild(row);
                     }
-                } catch (error) {
-                    console.log("Fallback à la méthode canvas pour la suppression des métadonnées", error);
                 }
-                
-                // Méthode de secours avec canvas si piexifjs échoue ou n'est pas disponible
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    
-                    // Get clean image as data URL
-                    const cleanDataUrl = canvas.toDataURL(mimeType);
-                    
-                    // Estimate size of clean image
-                    const cleanSize = Math.round(cleanDataUrl.length * 0.75);
-                    
-                    callback(cleanDataUrl, cleanSize);
-                };
-                img.src = originalDataUrl;
+                exifSection.appendChild(table);
+                metadataContent.appendChild(exifSection);
+            } else {
+                const noMetadata = document.createElement('p');
+                noMetadata.className = 'text-gray-600';
+                noMetadata.textContent = 'Aucune métadonnée EXIF détectée.';
+                metadataContent.appendChild(noMetadata);
             }
-            
-            // Format metadata for display
-            function formatMetadataDisplay(metadata) {
-                metadataContent.innerHTML = '';
-                
-                if (metadata.exif && Object.keys(metadata.exif).length > 0) {
-                    const exifSection = document.createElement('div');
-                    exifSection.className = 'metadata-section pb-4 mb-4';
-                    
-                    const sectionTitle = document.createElement('h4');
-                    sectionTitle.className = 'font-semibold mb-2';
-                    sectionTitle.textContent = 'Données EXIF';
-                    exifSection.appendChild(sectionTitle);
-                    
-                    const table = document.createElement('table');
-                    table.className = 'w-full text-sm';
-                    
-                    for (const [key, value] of Object.entries(metadata.exif)) {
-                        if (value && typeof value !== 'function') {
-                            const row = document.createElement('tr');
-                            
-                            const keyCell = document.createElement('td');
-                            keyCell.className = 'py-1 pr-4 font-medium text-gray-700';
-                            keyCell.textContent = formatExifKey(key);
-                            row.appendChild(keyCell);
-                            
-                            const valueCell = document.createElement('td');
-                            valueCell.className = 'py-1 text-gray-600';
-                            valueCell.textContent = formatExifValue(value);
-                            row.appendChild(valueCell);
-                            
-                            table.appendChild(row);
-                        }
-                    }
-                    
-                    exifSection.appendChild(table);
-                    metadataContent.appendChild(exifSection);
-                } else {
-                    const noMetadata = document.createElement('p');
-                    noMetadata.className = 'text-gray-600';
-                    noMetadata.textContent = 'Aucune métadonnée EXIF détectée.';
-                    metadataContent.appendChild(noMetadata);
-                }
-            }
-            
-            // Helper functions
-            function formatExifKey(key) {
-                return key
-                    .replace(/([A-Z])/g, ' $1')
-                    .replace(/^./, str => str.toUpperCase());
-            }
-            
-            function formatExifValue(value) {
-                if (value instanceof Array) {
-                    return value.join(', ');
-                }
-                return value.toString();
-            }
-            
-            function formatBytes(bytes, decimals = 2) {
-                if (bytes === 0) return '0 Bytes';
-                
-                const k = 1024;
-                const dm = decimals < 0 ? 0 : decimals;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-            }
-            
-            // Event listeners for UI interactions
-            viewMetadataBtn.addEventListener('click', function() {
-                metadataDetails.classList.toggle('hidden');
-                
-                if (!metadataDetails.classList.contains('hidden')) {
-                    viewMetadataBtn.textContent = 'Masquer les métadonnées';
-                } else {
-                    viewMetadataBtn.textContent = 'Voir les métadonnées';
-                }
-            });
-            
-            processAnotherBtn.addEventListener('click', function() {
-                // Reset UI
-                dropZone.classList.remove('hidden');
-                resultsArea.classList.add('hidden');
-                metadataDetails.classList.add('hidden');
-                progressBar.style.width = '0%';
-                fileInput.value = '';
-                viewMetadataBtn.textContent = 'Voir les métadonnées';
-            });
+        }
+
+        function formatExifKey(key) {
+            return key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+        }
+
+        function formatExifValue(value) {
+            if (value instanceof Array) return value.join(', ');
+            return value.toString();
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        viewMetadataBtn.addEventListener('click', function() {
+            metadataDetails.classList.toggle('hidden');
+            viewMetadataBtn.textContent = metadataDetails.classList.contains('hidden') 
+                ? 'Voir les métadonnées' 
+                : 'Masquer les métadonnées';
+        });
+
+        processAnotherBtn.addEventListener('click', function() {
+            dropZone.classList.remove('hidden');
+            resultsArea.classList.add('hidden');
+            metadataDetails.classList.add('hidden');
+            progressBar.style.width = '0%';
+            fileInput.value = '';
+            viewMetadataBtn.textContent = 'Voir les métadonnées';
+            downloadBtn.href = '#';
+            downloadBtn.classList.add('pointer-events-none', 'opacity-50');
+        });
+    });
+    </script>
+</body>
+</html>
