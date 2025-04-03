@@ -346,7 +346,6 @@
             
             <div class="or-divider">OR</div>
             
-            <!-- Direct file selector button -->
             <div style="text-align: center; margin-bottom: 20px;">
                 <button id="select-file-btn" style="background-color: var(--accent-color); color: white; border: none; border-radius: 6px; padding: 15px 30px; font-size: 1rem; cursor: pointer;">
                     Select Image from Device
@@ -402,14 +401,9 @@
             let currentImage = null;
             let currentMetadata = {};
             
-            // File selection button functionality
+            // File selection button
             document.getElementById('select-file-btn').addEventListener('click', function() {
-                console.log("Select file button clicked");
-                document.getElementById('file-input').click();
-            });
-            
-            fileInput.addEventListener('click', function(e) {
-                console.log("File input clicked");
+                fileInput.click();
             });
             
             dropzone.addEventListener('dragover', function(e) {
@@ -424,15 +418,12 @@
             dropzone.addEventListener('drop', function(e) {
                 e.preventDefault();
                 dropzone.classList.remove('dragover');
-                console.log("File dropped", e.dataTransfer.files);
-                
                 if (e.dataTransfer.files.length > 0) {
                     handleFile(e.dataTransfer.files[0]);
                 }
             });
             
-            fileInput.addEventListener('change', function(e) {
-                console.log("File input changed", this.files);
+            fileInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
                     handleFile(this.files[0]);
                 }
@@ -446,46 +437,79 @@
                 }
             });
             
-            // Image URL loading
-            function loadImageFromUrl(url) {
+            // Download clean image
+            downloadCleanBtn.addEventListener('click', function() {
+                if (!currentImage) return;
                 const img = new Image();
-                img.crossOrigin = "Anonymous";
-                
+                const blobUrl = URL.createObjectURL(currentImage);
                 img.onload = function() {
-                    // Create a canvas to get the image data
                     const canvas = document.createElement('canvas');
                     canvas.width = img.width;
                     canvas.height = img.height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0);
-                    
-                    // Convert canvas to blob
                     canvas.toBlob(function(blob) {
-                        const newBlob = new Blob([blob], { type: blob.type });
-                        newBlob.name = url.split('/').pop() || 'image.jpg';
-                        handleFile(newBlob);
-                    });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'cleaned_' + (currentImage.name || 'image.jpg');
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, currentImage.type);
+                    URL.revokeObjectURL(blobUrl);
                 };
-                
+                img.src = blobUrl;
+            });
+            
+            // Copy metadata to clipboard
+            copyMetadataBtn.addEventListener('click', function() {
+                if (!currentMetadata) return;
+                const metadataText = JSON.stringify(currentMetadata, null, 2);
+                navigator.clipboard.writeText(metadataText).then(() => {
+                    notification.textContent = 'Metadata copied to clipboard';
+                    notification.classList.add('show');
+                    setTimeout(() => notification.classList.remove('show'), 2000);
+                }).catch(err => {
+                    console.error('Failed to copy metadata:', err);
+                    alert('Failed to copy metadata to clipboard');
+                });
+            });
+            
+            function loadImageFromUrl(url) {
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    try {
+                        ctx.drawImage(img, 0, 0);
+                        canvas.toBlob(function(blob) {
+                            const newBlob = new Blob([blob], { type: blob.type });
+                            newBlob.name = url.split('/').pop() || 'image.jpg';
+                            handleFile(newBlob);
+                        });
+                    } catch (error) {
+                        alert('Error processing image: CORS policy may be blocking access.');
+                        console.error(error);
+                    }
+                };
                 img.onerror = function() {
-                    alert('Failed to load image from URL. Please check the URL or try another image.');
+                    alert('Failed to load image from URL. Check the URL or CORS settings.');
                 };
-                
                 img.src = url;
             }
             
-            // File handling
             function handleFile(file) {
-                console.log("Processing file:", file);
-                
                 if (!file || !file.type.startsWith('image/')) {
                     alert('Please select a valid image file.');
                     return;
                 }
                 
                 currentImage = file;
-                
-                // Show loading state
                 resultsSection.style.display = 'block';
                 metadataContainer.innerHTML = `
                     <div class="loading">
@@ -494,36 +518,27 @@
                     </div>
                 `;
                 
-                // Display image preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    console.log("File loaded, setting preview");
                     imagePreview.src = e.target.result;
-                    
-                    // Extract all available metadata
                     extractAllMetadata(file);
                 };
                 reader.readAsDataURL(file);
             }
             
-            // Extract metadata using multiple approaches for maximum coverage
             function extractAllMetadata(file) {
-                // We'll use the FileReader to get the raw bytes
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Try to get EXIF data using exif-js
                     let exifData = {};
                     try {
                         const tags = EXIF.readFromBinaryFile(e.target.result);
-                        if (tags) {
-                            exifData = tags;
-                        }
+                        if (tags) exifData = tags;
                     } catch (error) {
                         console.warn('Error reading EXIF data:', error);
                     }
                     
-                    // Get image data from a canvas - this can extract some basic info
                     const img = new Image();
+                    const blobUrl = URL.createObjectURL(file);
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
                         canvas.width = img.width;
@@ -531,7 +546,6 @@
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0);
                         
-                        // Get pixel data (can be used to detect color space)
                         let pixelData = {};
                         try {
                             const imageData = ctx.getImageData(0, 0, 1, 1);
@@ -545,73 +559,39 @@
                             console.warn('Error getting pixel data:', error);
                         }
                         
-                        // Combine all data sources
-                        const allMetadata = {
+                        const combinedMetadata = {
                             ...exifData,
                             _imageProperties: pixelData
                         };
                         
-                        currentMetadata = allMetadata;
-                        
-                        // Display the combined metadata
-                        displayMetadata(allMetadata, file);
-                    };
-                    
-                    // Create URL for the image
-                    const blobUrl = URL.createObjectURL(file);
-                    img.src = blobUrl;
-                    
-                    // Clean up URL when done
-                    img.onload = function() {
-                        URL.revokeObjectURL(blobUrl);
-                        
-                        // Get pixel data for additional information
-                        const canvas = document.createElement('canvas');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0);
-                        
-                        // Add image properties to metadata
-                        const imageProperties = {
-                            width: img.width,
-                            height: img.height,
-                            aspectRatio: (img.width / img.height).toFixed(2)
-                        };
-                        
-                        // Combine with EXIF data
-                        const combinedMetadata = {
-                            ...exifData,
-                            _imageProperties: imageProperties
-                        };
-                        
-                        currentMetadata = combinedMetadata;
-                        
-                        // Get file info
                         const fileInfo = {
                             name: file.name,
                             size: formatFileSize(file.size),
                             type: file.type,
-                            lastModified: new Date(file.lastModified).toLocaleString()
+                            lastModified: file.lastModified ? new Date(file.lastModified).toLocaleString() : 'N/A'
                         };
-                        
-                        // Add file info to metadata
                         combinedMetadata._fileInfo = fileInfo;
                         
-                        // Display the combined metadata
+                        currentMetadata = combinedMetadata;
                         displayMetadata(combinedMetadata, file);
+                        URL.revokeObjectURL(blobUrl);
                     };
+                    img.src = blobUrl;
                 };
-                
                 reader.readAsArrayBuffer(file);
             }
             
-            // Display the metadata in organized sections
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
             function displayMetadata(metadata, file) {
-                // Clear previous results
                 metadataContainer.innerHTML = '';
                 
-                // Define metadata categories
                 const categories = {
                     'File Information': {},
                     'Image Properties': {},
@@ -623,26 +603,15 @@
                     'Other Metadata': {}
                 };
                 
-                // Special handling for file info
-                if (metadata._fileInfo) {
-                    categories['File Information'] = metadata._fileInfo;
-                }
+                if (metadata._fileInfo) categories['File Information'] = metadata._fileInfo;
+                if (metadata._imageProperties) categories['Image Properties'] = metadata._imageProperties;
                 
-                // Special handling for image properties
-                if (metadata._imageProperties) {
-                    categories['Image Properties'] = metadata._imageProperties;
-                }
-                
-                // Map EXIF tags to categories
                 const tagMappings = {
-                    // Camera info
                     'Make': 'Camera Information',
                     'Model': 'Camera Information',
                     'Software': 'Camera Information',
                     'Copyright': 'Camera Information',
                     'Artist': 'Camera Information',
-                    
-                    // Image settings
                     'ExposureTime': 'Image Settings',
                     'FNumber': 'Image Settings',
                     'ApertureValue': 'Image Settings',
@@ -664,15 +633,11 @@
                     'ExposureBias': 'Image Settings',
                     'LightSource': 'Image Settings',
                     'FocalLengthIn35mmFilm': 'Image Settings',
-                    
-                    // Dates
                     'DateTime': 'Date and Time',
                     'DateTimeOriginal': 'Date and Time',
                     'DateTimeDigitized': 'Date and Time',
                     'ModifyDate': 'Date and Time',
                     'CreateDate': 'Date and Time',
-                    
-                    // GPS
                     'GPSLatitude': 'GPS Location',
                     'GPSLatitudeRef': 'GPS Location',
                     'GPSLongitude': 'GPS Location',
@@ -681,8 +646,6 @@
                     'GPSAltitudeRef': 'GPS Location',
                     'GPSTimeStamp': 'GPS Location',
                     'GPSDateStamp': 'GPS Location',
-                    
-                    // Color info
                     'ColorSpace': 'Color Information',
                     'BitsPerSample': 'Color Information',
                     'WhitePoint': 'Color Information',
@@ -694,20 +657,12 @@
                     'ReferenceBlackWhite': 'Color Information'
                 };
                 
-                // Categorize all metadata
                 for (const key in metadata) {
-                    // Skip internal property names (starting with _)
-                    if (key.startsWith('_')) continue;
-                    
-                    // Skip thumbnail and maker notes (too large/binary)
-                    if (key === 'thumbnail' || key === 'MakerNote') continue;
-                    
+                    if (key.startsWith('_') || key === 'thumbnail' || key === 'MakerNote') continue;
                     const category = tagMappings[key] || 'Other Metadata';
                     categories[category][key] = metadata[key];
                 }
                 
-                // Special case for color-related data
-                // Look for typical color profile data that might be in unusual tags
                 for (const key in metadata) {
                     if (key.toLowerCase().includes('color') || 
                         key.toLowerCase().includes('matrix') || 
@@ -715,58 +670,43 @@
                         key.toLowerCase().includes('cmyk') || 
                         key.toLowerCase().includes('icc') || 
                         key.toLowerCase().includes('profile')) {
-                        
                         categories['Color Information'][key] = metadata[key];
                     }
                 }
                 
-                // Display categories that have data
                 let metadataFound = false;
-                
                 for (const category in categories) {
                     const data = categories[category];
-                    
                     if (Object.keys(data).length > 0) {
                         metadataFound = true;
                         const groupElement = document.createElement('div');
                         groupElement.className = 'metadata-group';
-                        
                         const groupTitle = document.createElement('h3');
                         groupTitle.textContent = category;
                         groupElement.appendChild(groupTitle);
                         
-                        // Sort keys alphabetically
                         const sortedKeys = Object.keys(data).sort();
-                        
-                        for (const key of sortedKeys) {
+                        for (const key of sortedKeys) | {
                             const value = data[key];
-                            
                             const item = document.createElement('div');
                             item.className = 'metadata-item';
-                            
                             const label = document.createElement('div');
                             label.className = 'metadata-label';
                             label.textContent = formatLabel(key);
-                            
                             const valueEl = document.createElement('div');
                             valueEl.className = 'metadata-value';
                             valueEl.textContent = formatValue(key, value);
-                            
                             item.appendChild(label);
                             item.appendChild(valueEl);
                             groupElement.appendChild(item);
                         }
-                        
                         metadataContainer.appendChild(groupElement);
                     }
                 }
                 
-                // If no metadata was found
                 if (!metadataFound) {
-                    // Try to extract low-level image data from the binary file
                     extractLowLevelMetadata(file);
                 } else {
-                    // Add binary scan button for advanced users
                     const advancedBtn = document.createElement('button');
                     advancedBtn.textContent = "Scan for additional metadata";
                     advancedBtn.style.margin = "20px auto";
@@ -777,153 +717,59 @@
                     advancedBtn.style.border = "none";
                     advancedBtn.style.borderRadius = "4px";
                     advancedBtn.style.cursor = "pointer";
-                    
                     advancedBtn.addEventListener('click', function() {
                         extractLowLevelMetadata(file);
                         advancedBtn.disabled = true;
                         advancedBtn.textContent = "Scanning...";
                     });
-                    
                     metadataContainer.appendChild(advancedBtn);
                 }
             }
             
-            // Extract low-level metadata by scanning binary data
             function extractLowLevelMetadata(file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const buffer = e.target.result;
                     const dataView = new DataView(buffer);
                     const byteLength = buffer.byteLength;
-                    
-                    // Create a container for found metadata
                     const foundMetadata = {
                         'Technical Information': {},
                         'Color Profile Data': {},
                         'Hidden Metadata': {}
                     };
                     
-                    // Look for JPEG markers
                     if (file.type === 'image/jpeg') {
-                        // Scan for common metadata markers
                         let offset = 0;
                         while (offset < byteLength - 1) {
-                            // Look for JPEG markers (0xFF followed by marker type)
                             if (dataView.getUint8(offset) === 0xFF) {
                                 const marker = dataView.getUint8(offset + 1);
-                                
-                                // App1 marker (0xE1) - might contain EXIF
+                                const length = dataView.getUint16(offset + 2);
                                 if (marker === 0xE1) {
                                     foundMetadata['Technical Information']['EXIF_Data_Present'] = 'Yes';
-                                }
-                                
-                                // App2 marker (0xE2) - might contain ICC profile
-                                if (marker === 0xE2) {
+                                } else if (marker === 0xE2) {
                                     foundMetadata['Color Profile Data']['ICC_Profile_Present'] = 'Yes';
-                                }
-                                
-                                // App13 marker (0xED) - might contain IPTC/Photoshop data
-                                if (marker === 0xED) {
+                                } else if (marker === 0xED) {
                                     foundMetadata['Hidden Metadata']['Photoshop_Metadata_Present'] = 'Yes';
-                                }
-                                
-                                // App14 marker (0xEE) - might contain Adobe DCT info
-                                if (marker === 0xEE) {
+                                } else if (marker === 0xEE) {
                                     foundMetadata['Color Profile Data']['Adobe_Color_Info_Present'] = 'Yes';
                                 }
-                            }
-                            offset++;
-                        }
-                        
-                        // Check for specific color profile information
-                        // Look for XYZ in ICC profiles
-                        const textDecoder = new TextDecoder();
-                        for (let i = 0; i < byteLength - 20; i++) {
-                            if (dataView.getUint8(i) === 'X'.charCodeAt(0) &&
-                                dataView.getUint8(i+1) === 'Y'.charCodeAt(0) &&
-                                dataView.getUint8(i+2) === 'Z'.charCodeAt(0)) {
-                                
-                                foundMetadata['Color Profile Data']['XYZ_ColorSpace_Data'] = 'Present';
-                            }
-                            
-                            // Look for common ICC profile tags
-                            if (i < byteLength - 50) {
-                                const potentialText = textDecoder.decode(buffer.slice(i, i+50));
-                                if (potentialText.includes('sRGB') || 
-                                    potentialText.includes('Adobe RGB') || 
-                                    potentialText.includes('ProPhoto')) {
-                                    
-                                    foundMetadata['Color Profile Data']['ColorSpace_Name'] = potentialText.trim();
-                                    // Skip ahead to avoid duplicates
-                                    i += 40;
-                                }
+                                offset += length + 2;
+                            } else {
+                                offset++;
                             }
                         }
                     }
                     
-                    // Try to find BitsPerSample data
-                    const bitsPerSamplePatterns = ['BitsPerSample', 'BitDepth', 'BitsPer'];
-                    for (const pattern of bitsPerSamplePatterns) {
-                        let found = false;
-                        // Scan for text that might contain this info
-                        for (let i = 0; i < byteLength - pattern.length; i++) {
-                            let matches = true;
-                            for (let j = 0; j < pattern.length; j++) {
-                                if (dataView.getUint8(i + j) !== pattern.charCodeAt(j)) {
-                                    matches = false;
-                                    break;
-                                }
-                            }
-                            if (matches) {
-                                // Found a match, try to extract the value
-                                found = true;
-                                foundMetadata['Color Profile Data']['BitsPerSample'] = 'Found (check file for details)';
-                                break;
-                            }
-                        }
-                        if (found) break;
-                    }
-                    
-                    // Try to find color matrix data
-                    const colorMatrixPatterns = ['ColorMatrix', 'Matrix', 'BlueMatrixColumn'];
-                    for (const pattern of colorMatrixPatterns) {
-                        let found = false;
-                        // Scan for text that might contain this info
-                        for (let i = 0; i < byteLength - pattern.length; i++) {
-                            let matches = true;
-                            for (let j = 0; j < pattern.length; j++) {
-                                if (dataView.getUint8(i + j) !== pattern.charCodeAt(j)) {
-                                    matches = false;
-                                    break;
-                                }
-                            }
-                            if (matches) {
-                                // Found a match, try to extract the value
-                                found = true;
-                                foundMetadata['Color Profile Data']['ColorMatrix'] = 'Found (check file for details)';
-                                break;
-                            }
-                        }
-                        if (found) break;
-                    }
-                    
-                    // Check for PNG specific chunks
                     if (file.type === 'image/png') {
-                        // PNG files have chunks that start after the 8-byte signature
                         let offset = 8;
-                        
-                        while (offset < byteLength - 12) { // Minimum chunk size is 12 bytes
+                        while (offset < byteLength - 12) {
                             const length = dataView.getUint32(offset);
-                            
-                            // Chunk type is 4 bytes
                             const chunkType = String.fromCharCode(
                                 dataView.getUint8(offset + 4),
                                 dataView.getUint8(offset + 5),
                                 dataView.getUint8(offset + 6),
                                 dataView.getUint8(offset + 7)
                             );
-                            
-                            // Record meaningful chunks
                             if (chunkType === 'pHYs') {
                                 foundMetadata['Technical Information']['Physical_Dimensions'] = 'Present';
                             } else if (chunkType === 'iCCP') {
@@ -937,8 +783,26 @@
                             } else if (chunkType === 'eXIf') {
                                 foundMetadata['Technical Information']['EXIF_Data'] = 'Present';
                             }
-                            
-                            // Move to the next chunk
-                            // Skip length (4) + type (4) + data (length) + CRC (4)
                             offset += 12 + length;
                         }
+                    }
+                    
+                    displayMetadata(foundMetadata, file);
+                };
+                reader.readAsArrayBuffer(file);
+            }
+            
+            function formatLabel(key) {
+                return key.replace(/([A-Z])/g, ' $1').trim();
+            }
+            
+            function formatValue(key, value) {
+                if (typeof value === 'object' && value !== null) {
+                    return JSON.stringify(value);
+                }
+                return String(value);
+            }
+        });
+    </script>
+</body>
+</html>
